@@ -3,9 +3,7 @@
 stage('checkout') {
   node('infra') {
     try {
-      sh '''
-        git clone https://github.com/kumina/postfix_exporter.git
-      '''
+      checkout scm
     } catch (e) {
       echo e.getMessage()
       currentBuild.result = 'FAILURE'
