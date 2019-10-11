@@ -47,7 +47,7 @@ stage('upload') {
     if (env.BRANCH_NAME == 'master') {
       node('infra') {
         try {
-          sendToNexus("infra-postfix-exporter", "postfix_exporter", "go/bin")
+          sendToNexus("infra-postfix-exporter", "postfix_exporter", ".")
         } catch (e) {
           echo e.getMessage()
           currentBuild.result = 'FAILURE'
