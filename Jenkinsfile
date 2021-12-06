@@ -1,18 +1,18 @@
 @Library('infra-jenkins@master') _
 
-
+/**
+ * Job Pipeline
+ */
 node('ec2_vam') {
   try {
     stageCheckout()
     stageCompile()
     if (env.BRANCH_NAME == 'master') {
       sendToNexus()
-    } else {
-      stageArchiveArtifacts()
     }
   } catch (e) {
-    echo e.getMessage()
     currentBuild.result = "FAILURE"
+    throw e
   } finally {
     stageCleanup()
   }
@@ -43,12 +43,6 @@ def stageCompile() {
         mv /go/bin/postfix_exporter .
       '''
     }
-  }
-}
-
-def stageArchiveArtifacts() {
-  stage("Archive Artifacts") {
-    archiveArtifacts artifacts: 'postfix_exporter', fingerprint: true
   }
 }
 
